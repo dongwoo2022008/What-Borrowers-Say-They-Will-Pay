@@ -18,7 +18,7 @@ import pandas as pd, numpy as np
 
 D = 'data/analysis_v3_public.csv'
 PN = 'data/panel_long.csv'
-OUT = 'figures/Figure4_alignment.png'
+OUT = 'figures/Figure_4.png'
 
 d = pd.read_csv(D)
 p = pd.read_csv(PN)

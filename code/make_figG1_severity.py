@@ -24,8 +24,8 @@ GREY = {'early': 245, 'ontime': 218, 'late1_7': 175, 'late8_30': 130,
 
 d = pd.read_csv('data/analysis_v3_public.csv')
 p = pd.read_csv('data/panel_long.csv')
-r = d[d['outcome'].isin(['완납', '손실'])].copy()
-r['repaid'] = (r['outcome'] == '완납').astype(int)
+r = d[d['outcome'].isin(['repaid', 'charged_off'])].copy()
+r['repaid'] = (r['outcome'] == 'repaid').astype(int)
 r['dq'] = r['first_delinq_k'].notna()
 
 def cat(row):
@@ -86,7 +86,7 @@ leg = ax.legend(handles=handles, loc='upper right', fontsize=9.5, ncol=2,
                 framealpha=1, edgecolor='#888888')
 leg.get_frame().set_linewidth(0.8)
 
-OUT = 'figures/FigureG1_severity.png'
+OUT = 'figures/Figure_G1.png'
 fig.savefig(OUT, dpi=600, bbox_inches='tight', pad_inches=0.10, facecolor='white')
 from PIL import Image
 im = Image.open(OUT)
