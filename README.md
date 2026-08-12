@@ -8,10 +8,13 @@ Verification repository for the manuscript. It contains the processed datasets, 
 
 ```
 data/
-  analysis_v3_public.csv   Loan-level analysis file (1,929 loans, 91 variables).
+  analysis_v3_public.csv   Loan-level analysis file (1,929 loans, 88 variables).
                            = the paper's analysis dataset with the raw plan_text
-                           column removed and the derived `salday` column
-                           (rule-based payday extraction) added.
+                           column and the text-derived `ev` snippets removed
+                           (privacy), Korean categorical values translated to
+                           English, redundant Korean string duplicates of
+                           numeric columns dropped, and the derived `salday`
+                           column (rule-based payday extraction) added.
   panel_long.csv           Installment panel (19,755 rows, analytic sample): scheduled/actual
                            dates, payment status, delay, amounts.
   loan_level_pcg.csv       Loan-level plan-capacity-gap (PCG) file for the
@@ -21,10 +24,13 @@ data/
 protocols/
   PROTOCOL_final2.md       Frozen confirmatory protocol (2026-08-05): RQ1
                            alignment test and delinquency-initiation hazard,
-                           margins fixed before execution.
-  CODEBOOK_v2.md           Annotation codebook, first version (development).
+                           margins fixed before execution. English translation
+                           with the frozen Korean original appended.
+  CODEBOOK_v2.md           Annotation codebook, first version. English
+                           translation + frozen Korean original (the prompt).
   CODEBOOK_v3.md           Frozen annotation codebook used for all v3
-                           measures (this is also the LLM prompt).
+                           measures. English translation + frozen Korean
+                           original, which is the LLM prompt of record.
 validation/
   llm_key.csv              Original full-corpus LLM annotation (key labels).
   llm_rerun_2026-08.csv    Fresh-context LLM re-annotation of the 120
@@ -71,6 +77,20 @@ figures/
 | RQ2 nested LPM / TOST and RQ3 discrete-time hazards (Tables 5–6) | analysis_v3_public, loan_level_pcg, panel_long | specifications in the manuscript (§4.3–4.4) and PROTOCOL_final2.md | re-estimable from the distributed variables |
 
 Permutation results are Monte Carlo; the archived 2026-08-05 runs are authoritative for the third digit. The confirmatory p-value uses the Phipson–Smyth correction (b+1)/(B+1).
+
+## Data dictionary (translated categorical values)
+
+All Korean categorical values in the data files were translated to English.
+Key mappings: `outcome` — repaid (완납), charged_off (손실), ongoing (진행중);
+loan `status` — closed_repaid, in_delinquency, repaying, charged_off_settled,
+repayment_delayed; panel `status` — regular_payment, lump_sum_payment,
+early_payoff, delinquent, charged_off; `gender` — male/female; `freq` —
+monthly/lump_sum; `job` — 25 occupation categories (English snake_case);
+`age` — integer years (0 = not reported). The Korean loan `amount` and
+`duration` strings were dropped as exact duplicates of the numeric `amt_won`
+and `dur_m` columns. The `ev` column (free-text Korean evidence snippets
+derived from the plan texts) was removed for the same privacy reason as
+plan_text.
 
 ## Environment
 

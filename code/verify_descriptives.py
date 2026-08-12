@@ -16,8 +16,8 @@ import pandas as pd
 d = pd.read_csv('data/analysis_v3_public.csv')
 print('analytic loans:', len(d))
 
-r = d[d['outcome'].isin(['완납', '손실'])].copy()
-r['repaid'] = (r['outcome'] == '완납').astype(int)
+r = d[d['outcome'].isin(['repaid', 'charged_off'])].copy()
+r['repaid'] = (r['outcome'] == 'repaid').astype(int)
 r['dq'] = r['first_delinq_k'].notna()
 print(f"resolved: {len(r)}  fully repaid: {100*r['repaid'].mean():.1f}%")
 g0 = r[~r['dq']]; g1 = r[r['dq'] & (r['repaid'] == 1)]; g2 = r[r['dq'] & (r['repaid'] == 0)]
