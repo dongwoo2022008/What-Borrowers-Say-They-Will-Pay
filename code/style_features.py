@@ -1,47 +1,47 @@
 # -*- coding: utf-8 -*-
-"""Writing-style proxy construction (manuscript Section 3.4.1, Appendix D).
-
-Documents the exact rules behind the two style columns distributed in
-data/analysis_v3_public.csv:
-  S2 = rate of informal orthographic markers (matches / denominator * 100)
-  S3 = rate of positive-emotion vocabulary   (matches / denominator * 1000)
-
-Input is the borrower-written repayment-plan field only (the loan-purpose
-field is not used). Cleaning: whitespace runs collapsed to single spaces,
-then stripped. Denominator: character count including spaces, floored at 30.
-
-The raw plan texts contain personal information and are not distributed in
-this repository, so this script cannot be re-run publicly end-to-end; it is
-included as the authoritative specification. Reconstruction from the
-documented rules reproduces the distributed S2/S3 columns for all 1,929
-loans to floating-point precision (max abs. error 4.4e-16 / 7.1e-15), with
-the descriptive statistics reported in Appendix D: S2 mean .1909 (74.3%
-zeros), S3 mean 2.6440 (57.8% zeros), r(S2, S3) = .043.
-
-Known limitations (disclosed in Appendix D): about three quarters of the
-informal-marker matches are ellipses/punctuation runs rather than
-orthographic slang, so S2 is best read as informal punctuation; the
-positive-vocabulary stem '웃' produces partial-string false positives (e.g.,
-in 워크아웃/이웃) in 48 of 1,724 total matches (2.8%). The two measures are
-explicit proxies for writing style, not psychological states.
 """
-import re
-import numpy as np
+S2·S3 문체 변수 산출 스크립트 (원본 규칙, 2026-08-05 실행분)
+analysis_v3.csv의 S2·S3 열을 전수 1,929건에서 부동소수점 오차(<1e-14) 내로 재현함.
 
-INFORMAL = re.compile(r'ㅠ+|ㅜ+|ㅎㅎ+|ㅋ+|\^\^|~{2,}|\.{3,}|!{2,}|\?{2,}')
+입력 : plan_text — 마스터 파일 descriptiveRepaymentPlanBody 를
+       공백 정규화한 텍스트  (re.sub(r'\s+',' ', x).strip())
+출력 : S2 (비표준 표기 비율, per 100자) · S3 (긍정 어휘 비율, per 1000자)
+"""
+import re, pandas as pd
 
-POSITIVE_STEMS = ['감사', '고맙', '희망', '행복', '기쁘', '좋은', '좋습니다', '믿음', '믿어',
-                  '사랑', '축복', '웃', '따뜻', '소중', '응원', '보답', '은혜', '기회', '새출발', '꿈']
-POSITIVE = re.compile('|'.join(POSITIVE_STEMS))
+# ── S2: 비표준 표기 패턴 (자체 정의. 맞춤법 검사기 미사용) ──
+#   자모 반복형 정서 표기 + 과잉 문장부호. 맞춤법·띄어쓰기 오류는 세지 않는다.
+INFORMAL = r'(ㅠ+|ㅜ+|ㅎㅎ+|ㅋ+|\^\^|~{2,}|\.{3,}|!{2,}|\?{2,})'
 
+# ── S3: 긍정 어휘 목록 (자체 정의 20어. 기존 감성사전 미사용) ──
+POSITIVE = ['감사','고맙','희망','행복','기쁘','좋은','좋습니다','믿음','믿어','사랑',
+            '축복','웃','따뜻','소중','응원','보답','은혜','기회','새출발','꿈']
 
-def clean(text):
-    return re.sub(r'\s+', ' ', str(text)).strip()
+def normalize(x):
+    """마스터 원문 → 분석용 텍스트. 이 정규화 때문에 분모가 plan_len보다 1~3% 작다."""
+    return re.sub(r'\s+', ' ', str(x)).strip()
 
+def style_features(text_series):
+    t = text_series.fillna('')
+    denom = t.str.len().clip(lower=30)          # 글자 수(공백 포함), 하한 30
+    n_informal = t.apply(lambda s: len(re.findall(INFORMAL, s)))          # 중복 없는 매치 수
+    n_positive = t.apply(lambda s: sum(s.count(w) for w in POSITIVE))     # 부분문자열 빈도 합
+    return pd.DataFrame({'S2': n_informal/denom*100,      # ×100
+                         'S3': n_positive/denom*1000})    # ×1000
 
-def style_features(text):
-    """Return (informal_marker_rate, positive_vocab_rate) for one plan text."""
-    t = clean(text)
-    denom = max(len(t), 30)
-    return (len(INFORMAL.findall(t)) / denom * 100,
-            len(POSITIVE.findall(t)) / denom * 1000)
+if __name__ == '__main__':
+    df = pd.read_csv('analysis_v3.csv')
+    print(style_features(df.plan_text).describe())
+
+# ---------------------------------------------------------------------------
+# Verification note (this repository). The raw plan texts are not distributed
+# here (personal information), so this script cannot be re-run publicly; it is
+# the archived original specification behind the S2/S3 columns of
+# data/analysis_v3_public.csv. Reconstruction check (2026-08-12): applying
+# these rules to the original texts reproduces the distributed S2/S3 columns
+# for all 1,929 loans (max abs. error 4.4e-16 / 7.1e-15); descriptives match
+# Appendix D (S2 mean .1909, 74.3% zeros; S3 mean 2.6440, 57.8% zeros;
+# r = .043). Known limitations disclosed in Appendix D: informal-marker
+# matches are dominated by punctuation runs (ellipses), and the stem '웃'
+# produces partial-string false positives (48/1,724 = 2.8% of matches).
+# ---------------------------------------------------------------------------
