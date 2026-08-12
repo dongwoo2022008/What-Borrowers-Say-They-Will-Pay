@@ -42,6 +42,9 @@ code/
   placebo_cashflow_original_2026-08-05.py
                            Archived original placebo code (references the
                            undistributed plan_text; kept for provenance).
+  style_features.py        Construction rules for the two writing-style
+                           proxies (the S2/S3 columns): informal orthographic
+                           markers and positive-emotion vocabulary.
   verify_descriptives.py   Sample construction, trajectory counts, Table 7.
   verify_validation_agreement.py
                            LLM run-to-run stability (P2 linear wkappa .935,
