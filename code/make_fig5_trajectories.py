@@ -34,8 +34,8 @@ CUR, DEL, RED = 232, 150, 60          # grey levels, light -> dark = better -> w
 NCOL = 400
 
 d = pd.read_csv('data/analysis_v3_public.csv')
-r = d[d['outcome'].isin(['완납', '손실'])].copy()
-r['repaid'] = (r['outcome'] == '완납').astype(int)
+r = d[d['outcome'].isin(['repaid', 'charged_off'])].copy()
+r['repaid'] = (r['outcome'] == 'repaid').astype(int)
 r['dq'] = r['first_delinq_k'].notna()
 
 N = len(r)
@@ -166,7 +166,7 @@ for t in axB.texts:
         print(f'box {hit[0]}: text {bb.width:.3f}x{bb.height:.3f} vs box {w}x{h}',
               'OVERFLOW' if (ox > 0 or oy > 0) else 'ok')
 
-OUT = 'figures/Figure5_trajectories.png'
+OUT = 'figures/Figure_5.png'
 fig.savefig(OUT, dpi=600, facecolor='white', bbox_inches='tight', pad_inches=0.10)
 from PIL import Image
 im = Image.open(OUT)
