@@ -1,3 +1,44 @@
+# Final Two-Test Pre-Specification Protocol (frozen 2026-08-05 — written before execution)
+
+*English translation. The Korean original below is the frozen document of record.*
+
+The last two legitimate tests of the original narrative ("the propositional content of plans carries incremental information about performance"). Exploring any margin beyond the criteria written in this document is prohibited. If both tests fail, the original narrative is abandoned and Plan B (reframing around the negative results) is adopted.
+
+## Disclosures (honesty)
+
+- For Test 1, one feasibility peek was performed before execution (pooled-installment basis: 36.8% vs. placebo 24.4%). The confirmatory test is pre-specified at the more conservative loan level, and the peek is disclosed in the paper.
+- Test 2 (hazard) was not run in any form beforehand.
+
+## Test 1 — Promise–behavior correspondence
+
+- Sample: loans with P3v3 ≥ 4 and a stated promise day (`day`) (91 expected), installments with actual payment dates
+- Main statistic: the across-loan mean of each loan's "share of installments paid within ±3 days of the promised day"
+- Inference: permutation test reassigning promised days across loans, 2,000 draws (loan level), one-sided p
+- **Pass line: p < 0.05**
+- Secondary (not used for the pass/fail decision): ±1-day and ±5-day windows; subsample with stated-day-to-due-day distance ≥ 7 days (severing contractual alignment); early-payment installments only; loan-clustered regression of the circular distance between actual and promised days
+- Confounding defense: the permutation preserves the marginal distribution of promised days, so the general tendency of payments to cluster on particular calendar days is controlled
+
+## Test 2 — Installment-level discrete-time hazard, three events (RQ3)
+
+- Data: installment panel. GLM with cloglog link
+- Events: (1) delinquency initiation (risk set: installments before first delinquency); (2) return to current (risk set: delinquent installments after first delinquency); (3) re-delinquency (risk set: installments after return)
+- Content block: **P2 (validated, κ = .735), P3b (v3, validated), pay_sched_rx (rule-based), P1 (κ = .317 — attenuation caveat stated)**
+- Baseline model: installment-progress polynomial (cubic) + year FE + ln(amount) + term + interest rate + gender + past performance (with missing indicator) + ln(length)
+- Main test: LR test of the four-variable content block at each event, **Holm correction across the three events**
+- **Pass line: block p < 0.05 at one or more events after Holm correction**
+- SEs: loan-level cluster (robust) reported alongside
+
+## Decision rules
+
+- Both pass → refine and keep the original narrative as "content predicts the structure and timing of repayment"
+- Only Test 1 passes → reframe around correspondence (abandon success-prediction claims)
+- Only Test 2 passes → reframe around dynamics
+- Both fail → **Plan B confirmed. No further exploration.**
+
+---
+
+## Original (Korean) — frozen document of record
+
 # 최종 2검정 사전 지정 프로토콜 (2026-08-05 동결 — 실행 전 작성)
 
 당초 서사("계획의 명제적 내용은 이행에 관한 증분 정보를 담는다")의 마지막 합법적 검정 두 개.

@@ -1,3 +1,62 @@
+# Appendix A v3 — Revised Codebook for P3 and P4 (frozen 2026-08-05)
+
+*English translation. The Korean original below is the frozen instrument of record — the Korean text is what was given to the LLM annotator as the prompt. Where translation and original could diverge, the original governs.*
+
+Following the diagnosis from the G3 human validation (κ_P3 = 0.125, κ_P4 = 0.126), only P3 and P4 were revised. The P1, P2, and P5 definitions remain as in v2 (no re-annotation).
+
+## P3 Temporal structure (v3)
+
+**The timing must attach to the act of repayment — not to the timing of income arrival.**
+
+1 = no mention of repayment timing
+2 = vague ("as soon as possible", "I will repay when I have room")
+3 = repayment timing given relatively or as a range ("I will start repaying in three months", "I will settle it in the second half of the year", "I will repay when the bonus comes")
+4 = a repeatable or specific time is designated for the act of repayment
+    ("I will repay on the 25th of every month", "I will deposit it right on payday", "repayment completed by January 2020")
+5 = two or more such repayment times form a structure
+    ("200,000 won on the 25th of every month, early repayment of the balance when the December bonus arrives")
+
+### Exclusion rules (new in v3 — the core of the judgment)
+- **Statements that only describe when income arrives are not P3.**
+  "My payday is the 25th of every month" (income description) → P3 = 1 if nothing else is said
+  "I will repay right on my payday, the 25th" (linked to the act of repayment) → P3 = 4
+- **Dates inside explanations of past delinquency are not P3.**
+  "The delinquency happened because my payday moved from the 5th to the 10th" → ignored for the P3 judgment
+- Dates inside income/expense tables ("received on the 10th of every month") are ignored
+- Bare mentions of loan maturity or term ("applying for 12 months") are ignored
+
+## P4 Contingency (v3)
+
+**Expressions of repayment resolve are not P4. The condition "if things go wrong" must be explicit or clearly implied.**
+
+1 = no mention of the possibility of repayment disruption
+    ※ General resolve ("I will repay diligently", "I will never be late", "I promise faithful repayment") is always 1
+2 = only current hardship described, no provision for disruption
+3 = vague determination about what to do if disruption occurs
+    ("I will repay no matter what", "even if I have to work myself to the bone", "even if I have to take a part-time job")
+4 = one concrete alternative in case of disruption ("if business is bad, I will repay even if I have to pull out my deposit")
+5 = alternative + trigger condition ("if sales fall below half, I will repay from the academy's key money")
+
+## Anchor (only for cases with P3 = 4 or 5)
+
+**The question is what the repayment timing is tied to — not what the repayment resource is (resources are P2).**
+
+- income = tied to a recurring income event (repaying on payday, pension payment day, benefit deposit day)
+- calendar = a date designated without mention of an income event (repaying on the 10th of every month)
+- event = tied to a one-off event (upon receiving severance pay, from a maturing insurance payout)
+- none = cannot be determined
+
+Auxiliary: day = the designated day of month (1–31, null if none) · multi = whether multiple times form a structure
+
+## Validation plan
+- New LLM output is compared against the existing 60-case human coding (produced blind, fixed)
+- Because these 60 cases were also used to diagnose the codebook, the kappa is an optimistic estimate — stated in the paper, with bootstrap CIs alongside
+- For P4, the human reference values do not match the new definition → **demoted to an unvalidated exploratory variable in the appendix. Main block = P1, P2, P3b, P5**
+
+---
+
+## Original (Korean) — frozen instrument of record (the LLM prompt)
+
 # 부록 A v3 — P3·P4 개정 코드북 (2026-08-05 동결)
 
 G3 인간 검증(κ_P3=0.125, κ_P4=0.126)의 진단에 따라 P3·P4만 개정. P1·P2·P5 정의는 v2 유지(재주석 없음).
