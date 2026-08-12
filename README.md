@@ -12,7 +12,7 @@ data/
                            = the paper's analysis dataset with the raw plan_text
                            column removed and the derived `salday` column
                            (rule-based payday extraction) added.
-  panel_long.csv           Installment panel (19,779 rows): scheduled/actual
+  panel_long.csv           Installment panel (19,755 rows, analytic sample): scheduled/actual
                            dates, payment status, delay, amounts.
   loan_level_pcg.csv       Loan-level plan-capacity-gap (PCG) file for the
                            RQ2 equivalence (TOST) analysis.
